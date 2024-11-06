@@ -1,7 +1,23 @@
 package cli
 
-import "github.com/goldenkingstyle/demo-crypto/internal/storage"
+import (
+	"encoding/json"
+	"log"
+
+	"github.com/goldenkingstyle/demo-crypto/internal/entity"
+	"github.com/goldenkingstyle/demo-crypto/internal/storage"
+)
 
 func Init() {
-	storage.CreateStorage()
+
+	name := "user"
+
+	user := entity.NewUser(name)
+
+	userJson, err := json.MarshalIndent(user, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	storage.CreateStorage(userJson)
 }
