@@ -2,17 +2,21 @@ package cli
 
 import (
 	"encoding/json"
+	"flag"
 	"log"
 
 	"github.com/goldenkingstyle/demo-crypto/internal/entity"
 	"github.com/goldenkingstyle/demo-crypto/internal/storage"
 )
 
-func Init() {
+func Init(args []string) {
 
-	name := "user"
+	initSet := flag.NewFlagSet("init", flag.ExitOnError)
+	name := initSet.String("name", "user", "Profile name")
 
-	user := entity.NewUser(name)
+	initSet.Parse(args)
+
+	user := entity.NewUser(*name)
 
 	userJson, err := json.MarshalIndent(user, "", "\t")
 	if err != nil {
