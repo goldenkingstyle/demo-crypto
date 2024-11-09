@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/goldenkingstyle/demo-crypto/internal/api"
 	"github.com/goldenkingstyle/demo-crypto/internal/cli"
 	"github.com/goldenkingstyle/demo-crypto/internal/config"
 )
@@ -20,7 +21,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("API_KEY:", cfg.API_KEY)
+	api := api.NewAPI(*cfg)
 
 	flag.Parse()
 
@@ -32,7 +33,7 @@ func main() {
 	case "set":
 		cli.Set()
 	case "price":
-		cli.Price()
+		cli.Price(api)
 	default:
 		fmt.Println("Unknown command")
 	}
