@@ -1,4 +1,4 @@
-package entity
+package crypto
 
 type CryptoID int
 

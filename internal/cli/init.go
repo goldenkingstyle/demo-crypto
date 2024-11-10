@@ -5,8 +5,8 @@ import (
 	"flag"
 	"log"
 
-	"github.com/goldenkingstyle/demo-crypto/internal/entity"
 	"github.com/goldenkingstyle/demo-crypto/internal/storage"
+	"github.com/goldenkingstyle/demo-crypto/internal/user"
 )
 
 func Init(args []string) {
@@ -16,7 +16,7 @@ func Init(args []string) {
 
 	initSet.Parse(args)
 
-	user := entity.NewUser(*name)
+	user := user.NewUser(*name)
 
 	userJson, err := json.MarshalIndent(user, "", "\t")
 	if err != nil {

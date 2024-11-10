@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/goldenkingstyle/demo-crypto/internal/config"
-	"github.com/goldenkingstyle/demo-crypto/internal/entity"
+	"github.com/goldenkingstyle/demo-crypto/internal/crypto"
 )
 
 type API struct {
@@ -20,7 +20,7 @@ type CryptoListResponse struct {
 }
 
 type CryptoResponse struct {
-	ID    entity.CryptoID `json:"id"`
+	ID    crypto.CryptoID `json:"id"`
 	Name  string          `json:"name"`
 	Quote struct {
 		USD struct {
