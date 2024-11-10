@@ -1,7 +1,16 @@
 BINARY_NAME=crypto.exe
+BUILD_PATH=build/${BINARY_NAME}
+ARGS?=""
 
-run: compile
-	@./build/${BINARY_NAME}
+init: ARGS=init
+profile: ARGS=profile
+set: ARGS=set
+price: ARGS=price
+buy: ARGS=buy
+
+init profile price run: compile
+	@./${BUILD_PATH} ${ARGS}
+
 
 compile: 
-	@go build -o build/${BINARY_NAME} cmd/main.go
+	@go build -o ${BUILD_PATH} cmd/main.go
