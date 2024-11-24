@@ -8,14 +8,20 @@ import (
 	"github.com/goldenkingstyle/demo-crypto/internal/user"
 )
 
-func CreateStorage(userJson []byte) {
-	err := os.WriteFile("./storage/storage.json", userJson, 0666)
+func CreateStorage(user *user.User) {
+
+	userJson, err := json.MarshalIndent(user, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = os.WriteFile("./storage/storage.json", userJson, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func ReadStorage() user.User {
+func ReadStorage() *user.User {
 	userJson, err := os.ReadFile("./storage/storage.json")
 	if err != nil {
 		log.Fatal(err)
@@ -27,5 +33,14 @@ func ReadStorage() user.User {
 		log.Fatal(err)
 	}
 
-	return user
+	return &user
+}
+
+func UpdateStorage(user *user.User) {
+	err := os.Remove("./storage/storage.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	CreateStorage(user)
 }

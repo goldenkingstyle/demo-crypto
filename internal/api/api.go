@@ -20,11 +20,12 @@ type CryptoListResponse struct {
 }
 
 type CryptoResponse struct {
-	ID    crypto.CryptoID `json:"id"`
-	Name  string          `json:"name"`
-	Quote struct {
+	ID     crypto.CryptoID `json:"id"`
+	Name   string          `json:"name"`
+	Symbol string          `json:"symbol"`
+	Quote  struct {
 		USD struct {
-			Price float32 `json:"price"`
+			Price float64 `json:"price"`
 		} `json:"USD"`
 	} `json:"quote"`
 }

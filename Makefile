@@ -8,7 +8,7 @@ set: ARGS=set
 price: ARGS=price
 buy: ARGS=buy
 
-init profile price run: compile
+init profile set price buy run: compile
 	@./${BUILD_PATH} ${ARGS}
 
 

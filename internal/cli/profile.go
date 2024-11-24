@@ -1,16 +1,9 @@
 package cli
 
 import (
-	"fmt"
-
-	"github.com/goldenkingstyle/demo-crypto/internal/storage"
+	"github.com/goldenkingstyle/demo-crypto/internal/user"
 )
 
-func Profile() {
-
-	user := storage.ReadStorage()
-
-	fmt.Println("Profile name:", user.Name)
-	fmt.Println("Profile crypto wallet:")
-
+func Profile(user *user.User) {
+	user.Profile()
 }
