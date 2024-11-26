@@ -10,7 +10,6 @@ import (
 	"github.com/goldenkingstyle/demo-crypto/internal/api"
 	"github.com/goldenkingstyle/demo-crypto/internal/cli"
 	"github.com/goldenkingstyle/demo-crypto/internal/config"
-	"github.com/goldenkingstyle/demo-crypto/internal/storage"
 )
 
 func main() {
@@ -21,8 +20,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	user := storage.ReadStorage()
-
 	api := api.NewAPI(*cfg)
 
 	flag.Parse()
@@ -31,13 +28,13 @@ func main() {
 	case "init":
 		cli.Init(os.Args[2:])
 	case "profile":
-		cli.Profile(user)
+		cli.Profile()
 	case "set":
 		cli.Set()
 	case "price":
 		cli.Price(os.Args[2:], api)
 	case "buy":
-		cli.Buy(os.Args[2:], user, api)
+		cli.Buy(os.Args[2:], api)
 	default:
 		fmt.Println("Unknown command")
 	}

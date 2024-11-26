@@ -9,7 +9,9 @@ import (
 	"github.com/goldenkingstyle/demo-crypto/internal/user"
 )
 
-func Buy(args []string, user *user.User, api *api.API) {
+func Buy(args []string, api *api.API) {
+	user := user.GetUser()
+
 	buySet := flag.NewFlagSet("buy", flag.ExitOnError)
 
 	id := buySet.Int("id", 0, "crypto id for buying")

@@ -4,6 +4,8 @@ import (
 	"github.com/goldenkingstyle/demo-crypto/internal/user"
 )
 
-func Profile(user *user.User) {
+func Profile() {
+	user := user.GetUser()
+
 	user.Profile()
 }

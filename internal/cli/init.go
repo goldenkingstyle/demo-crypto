@@ -3,7 +3,6 @@ package cli
 import (
 	"flag"
 
-	"github.com/goldenkingstyle/demo-crypto/internal/storage"
 	"github.com/goldenkingstyle/demo-crypto/internal/user"
 )
 
@@ -13,7 +12,5 @@ func Init(args []string) {
 
 	initSet.Parse(args)
 
-	user := user.NewUser(*name)
-
-	storage.CreateStorage(user)
+	_ = user.NewUser(*name)
 }

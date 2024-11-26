@@ -11,7 +11,6 @@ type Config struct {
 }
 
 func Load(ctx context.Context) (*Config, error) {
-
 	var cfg Config
 
 	err := envconfig.Process(ctx, &cfg)
@@ -20,5 +19,4 @@ func Load(ctx context.Context) (*Config, error) {
 	}
 
 	return &cfg, nil
-
 }
