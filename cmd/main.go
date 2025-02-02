@@ -35,6 +35,8 @@ func main() {
 		cli.Price(os.Args[2:], api)
 	case "buy":
 		cli.Buy(os.Args[2:], api)
+	case "sell":
+		cli.Sell(os.Args[2:], api)
 	default:
 		fmt.Println("Unknown command")
 	}

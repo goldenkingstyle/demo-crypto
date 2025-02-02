@@ -82,11 +82,12 @@ func (user *User) Buy(id crypto.CryptoID, usd float64, api *api.API) {
 		log.Fatal("Unknown id")
 	}
 
+	amount := usd / crypto.Price
+
 	if usd > user.Balance {
 		log.Fatal("Not enough money")
 	}
 
-	amount := usd / crypto.Price
 	user.Balance -= usd
 
 	index := -1
@@ -105,6 +106,47 @@ func (user *User) Buy(id crypto.CryptoID, usd float64, api *api.API) {
 	} else {
 		user.Wallet[index].Amount += amount
 	}
+
+	user.Update()
+}
+
+func (user *User) Sell(id crypto.CryptoID, usd float64, api *api.API) {
+	cryptoList, err := api.GetPrice()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var crypto crypto.Crypto
+	for _, cryptoListItem := range cryptoList {
+		if cryptoListItem.ID == id {
+			crypto = cryptoListItem
+			break
+		}
+	}
+
+	if crypto.ID == 0 {
+		log.Fatal("Unknown id")
+	}
+
+	amount := usd / crypto.Price
+
+	index := -1
+	for i, walletCrypto := range user.Wallet {
+		if walletCrypto.Id == id {
+			index = i
+		}
+	}
+
+	if index == -1 {
+		log.Fatal("You don't have this crypto")
+	}
+
+	if user.Wallet[index].Amount < amount {
+		log.Fatal("Not enough crypto")
+	}
+
+	user.Wallet[index].Amount -= amount
+	user.Balance += usd
 
 	user.Update()
 }
