@@ -12,12 +12,12 @@ import (
 func Sell(args []string, api *api.API) {
 	user := user.GetUser()
 
-	buySet := flag.NewFlagSet("sell", flag.ExitOnError)
+	sellSet := flag.NewFlagSet("sell", flag.ExitOnError)
 
-	id := buySet.Int("id", 0, "crypto id for selling")
-	usd := buySet.Float64("usd", 0, "amount of usd for selling")
+	id := sellSet.Int("id", 0, "crypto id for selling")
+	usd := sellSet.Float64("usd", 0, "amount of usd for selling")
 
-	buySet.Parse(args)
+	sellSet.Parse(args)
 
 	if *id < 1 {
 		log.Fatal("Incorrect id")
