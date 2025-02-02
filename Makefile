@@ -1,4 +1,4 @@
-BINARY_NAME=crypto.exe
+BINARY_NAME=crypto
 BUILD_PATH=build/${BINARY_NAME}
 ARGS?=""
 

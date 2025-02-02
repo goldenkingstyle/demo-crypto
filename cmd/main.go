@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
 	"log"
 	"os"
 
@@ -23,21 +22,25 @@ func main() {
 	api := api.NewAPI(*cfg)
 
 	flag.Parse()
+	command := flag.Arg(0)
+	args := os.Args[2:]
+	cli := cli.NewCLI(command, args)
 
-	switch flag.Arg(0) {
-	case "init":
-		cli.Init(os.Args[2:])
-	case "profile":
-		cli.Profile()
-	case "set":
-		cli.Set()
-	case "price":
-		cli.Price(os.Args[2:], api)
-	case "buy":
-		cli.Buy(os.Args[2:], api)
-	case "sell":
-		cli.Sell(os.Args[2:], api)
-	default:
-		fmt.Println("Unknown command")
-	}
+	app := newApp(cfg, cli, api)
+
+	app.run()
+}
+
+type App struct {
+	cfg *config.Config
+	cli *cli.CLI
+	api *api.API
+}
+
+func newApp(cfg *config.Config, cli *cli.CLI, api *api.API) *App {
+	return &App{cfg, cli, api}
+}
+
+func (app *App) run() {
+	app.cli.Command(app.cfg, app.api)
 }

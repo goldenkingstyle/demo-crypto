@@ -36,8 +36,15 @@ func NewUser(name string) *User {
 	return &user
 }
 
+// TODO: storage
 func GetUser() *User {
-	userJson, err := os.ReadFile("./storage/storage.json")
+	storagePath, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+	storagePath += "/crypto-storage/storage.json"
+
+	userJson, err := os.ReadFile(storagePath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -157,7 +164,13 @@ func (user *User) Update() {
 		log.Fatal(err)
 	}
 
-	err = os.WriteFile("./storage/storage.json", userJson, 0666)
+	storagePath, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+	storagePath += "/crypto-storage/storage.json"
+
+	err = os.WriteFile(storagePath, userJson, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
