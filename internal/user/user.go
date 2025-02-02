@@ -73,9 +73,7 @@ func (user *User) Buy(id crypto.CryptoID, usd float64, api *api.API) {
 	var crypto crypto.Crypto
 	for _, cryptoListItem := range cryptoList {
 		if cryptoListItem.ID == id {
-			crypto.ID = cryptoListItem.ID
-			crypto.Name = cryptoListItem.Name
-			crypto.Price = cryptoListItem.Quote.USD.Price
+			crypto = cryptoListItem
 			break
 		}
 	}

@@ -1,5 +1,5 @@
 {
-    "name": "user",
-    "balance": 10000,
-    "wallet": []
+	"name": "user",
+	"balance": 10000,
+	"wallet": []
 }

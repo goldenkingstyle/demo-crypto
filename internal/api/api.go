@@ -14,7 +14,6 @@ type API struct {
 	api_key string
 }
 
-// TODO: Renaming
 type CryptoListResponse struct {
 	CryptoList []CryptoResponse `json:"data"`
 }
@@ -37,7 +36,7 @@ func NewAPI(cfg config.Config) *API {
 	}
 }
 
-func (api *API) GetPrice() ([]CryptoResponse, error) {
+func (api *API) GetPrice() ([]crypto.Crypto, error) {
 	response, err := api.get("https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest", nil)
 	if err != nil {
 		return nil, err
@@ -55,7 +54,15 @@ func (api *API) GetPrice() ([]CryptoResponse, error) {
 		return nil, err
 	}
 
-	cryptoList := cryptoListResponse.CryptoList
+	var cryptoList []crypto.Crypto
+
+	for _, cryptoResponse := range cryptoListResponse.CryptoList {
+		cryptoList = append(cryptoList, crypto.Crypto{
+			ID:    cryptoResponse.ID,
+			Name:  cryptoResponse.Name,
+			Price: cryptoResponse.Quote.USD.Price,
+		})
+	}
 
 	return cryptoList, nil
 }
