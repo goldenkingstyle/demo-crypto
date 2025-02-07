@@ -1,4 +1,9 @@
-BINARY_NAME=crypto
+ifeq ($(OS),Windows_NT)
+	BINARY_NAME=crypto.exe
+else 
+	BINARY_NAME=crypto
+endif
+
 BUILD_PATH=build/${BINARY_NAME}
 ARGS?=""
 
