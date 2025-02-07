@@ -170,7 +170,7 @@ func (user *User) Update() {
 	}
 	storagePath += "/crypto-storage/storage.json"
 
-	err = os.WriteFile(storagePath, userJson, 0666)
+	err = os.WriteFile(storagePath, userJson, 0777)
 	if err != nil {
 		log.Fatal(err)
 	}

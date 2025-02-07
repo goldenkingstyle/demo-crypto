@@ -54,7 +54,7 @@ func (cli *CLI) Init() {
 	storagePath += "/crypto-storage"
 
 	if _, err := os.Stat(storagePath); os.IsNotExist(err) {
-		err = os.Mkdir(storagePath, 0666)
+		err = os.Mkdir(storagePath, 0777)
 		if err != nil {
 			log.Fatal(err)
 		}
