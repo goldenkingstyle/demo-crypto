@@ -4,17 +4,19 @@ __CLI app for demo trading/investing in crypto written in Go__
 
 ## Installation
 
-init CLI storage with command:
-
-```powershell
-make init
-```
-
 Add /build package to PATH
+
+Add environment variable API_KEY  
 
 Compile code with command:
 ```powershell
 make compile
+```
+
+init CLI storage with command:
+
+```powershell
+crypto init
 ```
 
 ## Commands:
