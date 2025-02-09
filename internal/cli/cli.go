@@ -7,22 +7,23 @@ import (
 	"os"
 
 	"github.com/goldenkingstyle/demo-crypto/internal/api"
-	"github.com/goldenkingstyle/demo-crypto/internal/config"
 	"github.com/goldenkingstyle/demo-crypto/internal/crypto"
 	"github.com/goldenkingstyle/demo-crypto/internal/user"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 type CLI struct {
-	command string
-	args    []string
+	command     string
+	args        []string
+	api         *api.API
+	userService *user.UserService
 }
 
-func NewCLI(command string, args []string) *CLI {
-	return &CLI{command: command, args: args}
+func NewCLI(command string, args []string, api *api.API, userService *user.UserService) *CLI {
+	return &CLI{command, args, api, userService}
 }
 
-func (cli *CLI) Command(cfg *config.Config, api *api.API) {
+func (cli *CLI) Run() {
 	switch cli.command {
 	case "init":
 		cli.Init()
@@ -31,11 +32,11 @@ func (cli *CLI) Command(cfg *config.Config, api *api.API) {
 	case "set":
 		cli.Set()
 	case "price":
-		cli.Price(api)
+		cli.Price(cli.api)
 	case "buy":
-		cli.Buy(api)
+		cli.Buy(cli.api)
 	case "sell":
-		cli.Sell(api)
+		cli.Sell(cli.api)
 	default:
 		fmt.Println("Unknown command")
 	}
@@ -47,26 +48,11 @@ func (cli *CLI) Init() {
 
 	initSet.Parse(cli.args)
 
-	storagePath, err := os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-	storagePath += "/crypto-storage"
-
-	if _, err := os.Stat(storagePath); os.IsNotExist(err) {
-		err = os.Mkdir(storagePath, 0777)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	_ = user.NewUser(*name)
+	cli.userService.CreateUser(*name)
 }
 
 func (cli *CLI) Profile() {
-	user := user.GetUser()
-
-	user.Profile()
+	cli.userService.Profile()
 }
 
 func (cli *CLI) Set() {}
@@ -78,7 +64,7 @@ func (cli *CLI) Price(api *api.API) {
 
 	priceSet.Parse(cli.args)
 
-	cryptoList, err := api.GetPrice()
+	cryptoList, err := cli.api.GetPrice()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -87,8 +73,6 @@ func (cli *CLI) Price(api *api.API) {
 }
 
 func (cli *CLI) Buy(api *api.API) {
-	user := user.GetUser()
-
 	buySet := flag.NewFlagSet("buy", flag.ExitOnError)
 
 	id := buySet.Int("id", 0, "crypto id for buying")
@@ -104,12 +88,10 @@ func (cli *CLI) Buy(api *api.API) {
 		log.Fatal("Incorrect amount of usd")
 	}
 
-	user.Buy(crypto.CryptoID(*id), *usd, api)
+	cli.userService.Buy(crypto.CryptoID(*id), *usd, api)
 }
 
 func (cli *CLI) Sell(api *api.API) {
-	user := user.GetUser()
-
 	sellSet := flag.NewFlagSet("sell", flag.ExitOnError)
 
 	id := sellSet.Int("id", 0, "crypto id for selling")
@@ -125,7 +107,7 @@ func (cli *CLI) Sell(api *api.API) {
 		log.Fatal("Incorrect amount of usd")
 	}
 
-	user.Sell(crypto.CryptoID(*id), *usd, api)
+	cli.userService.Sell(crypto.CryptoID(*id), *usd, api)
 }
 
 func PrintCryptoList(count *int, cryptoList []crypto.Crypto) {

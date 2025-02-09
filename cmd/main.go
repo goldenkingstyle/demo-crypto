@@ -9,6 +9,7 @@ import (
 	"github.com/goldenkingstyle/demo-crypto/internal/api"
 	"github.com/goldenkingstyle/demo-crypto/internal/cli"
 	"github.com/goldenkingstyle/demo-crypto/internal/config"
+	"github.com/goldenkingstyle/demo-crypto/internal/user"
 )
 
 func main() {
@@ -23,24 +24,17 @@ func main() {
 
 	flag.Parse()
 	command := flag.Arg(0)
-	args := os.Args[2:]
-	cli := cli.NewCLI(command, args)
 
-	app := newApp(cfg, cli, api)
+	var args []string
+	if len(os.Args) >= 2 {
+		args = os.Args[2:]
+	}
 
-	app.run()
-}
+	repo := user.NewJsonUserRepository(cfg.Filepath)
 
-type App struct {
-	cfg *config.Config
-	cli *cli.CLI
-	api *api.API
-}
+	userService := user.NewUserService(repo)
 
-func newApp(cfg *config.Config, cli *cli.CLI, api *api.API) *App {
-	return &App{cfg, cli, api}
-}
+	cli := cli.NewCLI(command, args, api, userService)
 
-func (app *App) run() {
-	app.cli.Command(app.cfg, app.api)
+	cli.Run()
 }
